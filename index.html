@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .calendar {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 0;
+      }
+      .days {
+        text-align: center;
+      }
+
+      #current_month {
+        margin-right: 0.5rem;
+      }
+
+      .today {
+        background-color: green;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="calendar">
+      <h1>Calendar</h1>
+      <div style="display: flex; margin-top: 0">
+        <h3 id="current_month"></h3>
+        <h3 id="current_year"></h3>
+      </div>
+      <table class="calendar_table">
+        <tr class="days">
+          <th>Sun</th>
+          <th>Mon</th>
+          <th>Tue</th>
+          <th>Wed</th>
+          <th>Thu</th>
+          <th>Fri</th>
+          <th>Sat</th>
+        </tr>
+      </table>
+    </div>
+  </body>
+  <script>
+    let monthName = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ]
+    let today = new Date()
+    let year = today.getFullYear()
+    let month = today.getMonth()
+    let dayOfFirstDate = new Date(year, month, 1).getDay()
+    let lastDate = new Date(year, month + 1, 0).getDate()
+    let startDate = 1
+    let str = '<tr class="days">'
+
+    for (let i = 0; i <= 41; i++) {
+      //divide each week from sun to mon
+      if (i % 7 == 0) {
+        str += '</tr><tr class="days">'
+      }
+
+      //begin first date from the specific day and end when last day comes
+      if (i >= dayOfFirstDate && startDate <= lastDate) {
+        if (startDate == today.getDate()) {
+          str += '<td class="today">' + startDate + '</td>'
+        } else {
+          str += '<td>' + startDate + '</td>'
+        }
+        startDate += 1
+      } else {
+        //blank dates
+        str += '<td></td>'
+      }
+    }
+    str += '</tr>'
+
+    //insert dates in calendar under table element as a last child
+    document
+      .querySelector('.calendar_table')
+      .insertAdjacentHTML('beforeend', str)
+
+    //indicate the name of month
+    document.querySelector('#current_month').textContent = monthName[month]
+    document.querySelector('#current_year').textContent = year
+  </script>
+</html>
